@@ -3,26 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Charlie’s Dashboard</title>
+  <title>Charlie’s Daily Dashboard</title>
   <style>
     body {
       margin: 0;
       font-family: 'Helvetica Neue', sans-serif;
       background: url('background.jpg') no-repeat center center fixed;
       background-size: cover;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      color: #fff;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #111;
     }
 
     header {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
       padding: 1rem 2rem 0 2rem;
+      color: #fff;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
     }
 
     #clock {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
 
     .dashboard {
@@ -33,25 +40,21 @@
     }
 
     .glass-container {
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-radius: 16px;
       padding: 1.5rem;
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
-    h2 {
-      margin-top: 0;
-    }
-
     iframe {
-      width: 100%;
-      height: 300px;
       border: none;
-      border-radius: 8px;
+      width: 100%;
+      height: 600px;
+      border-radius: 12px;
     }
 
     .focus-timer {
@@ -73,92 +76,59 @@
         grid-template-columns: 1fr;
         padding: 1rem;
       }
+
+      iframe {
+        height: 500px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div id="clock">Loading time...</div>
+    <h1>Charlie’s Daily Dashboard</h1>
+    <div id="clock"></div>
   </header>
 
   <main class="dashboard">
-    <!-- 🗓 Google Calendar -->
-    <div class="glass-container">
-      <h2>📅 Google Calendar</h2>
-      <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_email&ctz=Europe%2FLondon"></iframe>
-    </div>
-
-    <!-- ✅ Google Tasks Placeholder -->
+    <!-- ✅ Google Tasks -->
     <div class="glass-container">
       <h2>✅ Google Tasks</h2>
-      <p>You can embed or sync tasks here using Make.com or Google Apps Script.</p>
+      <iframe src="https://tasksboard.com/app" allowfullscreen></iframe>
     </div>
 
-    <!-- 📌 Project Updates -->
+    <!-- 📅 Google Calendar -->
     <div class="glass-container">
-      <h2>📌 Project Updates</h2>
-      <p>This will later display summaries pulled from Notion or Sheets.</p>
+      <h2>📅 Google Calendar</h2>
+      <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" scrolling="no"></iframe>
     </div>
 
-    <!-- 🌦 Weather Widget -->
-    <div class="glass-container">
-      <h2>🌤️ Weather</h2>
-      <div id="weather">Getting weather data...</div>
-    </div>
-
-    <!-- ⏱ Focus Timer -->
+    <!-- ⏱️ Focus Timer -->
     <div class="glass-container">
       <h2>⏱️ Focus Timer</h2>
       <div class="focus-timer">
-        <div id="timer-display" style="font-size: 2rem; margin: 1rem 0;">25:00</div>
+        <div id="timer-display">25:00</div>
         <button onclick="toggleTimer()" id="startStopBtn">Start</button>
       </div>
-    </div>
-
-    <!-- 📈 Tasks Completed Today -->
-    <div class="glass-container">
-      <h2>📈 Tasks Completed Today</h2>
-      <ul id="task-summary">
-        <li>✅ Finished UI design</li>
-        <li>✅ Responded to 5 emails</li>
-      </ul>
     </div>
   </main>
 
   <script>
-    // 🕒 Live Clock
+    // Live Clock
     setInterval(() => {
       const now = new Date();
       document.getElementById('clock').textContent = now.toLocaleTimeString();
     }, 1000);
 
-    // 🌤 Weather API (needs valid API key)
-    const apiKey = 'YOUR_OPENWEATHER_API_KEY';
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { latitude, longitude } = pos.coords;
-      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById('weather').innerHTML = `
-            <strong>${data.name}</strong><br>
-            ${data.weather[0].description}<br>
-            🌡️ ${data.main.temp}°C
-          `;
-        })
-        .catch(() => {
-          document.getElementById('weather').textContent = 'Weather info unavailable';
-        });
-    });
-
-    // ⏱ Focus Timer Logic
+    // Focus Timer Logic
     let timer;
     let minutes = 25;
     let seconds = 0;
     let isRunning = false;
 
     function updateDisplay() {
-      document.getElementById('timer-display').textContent =
-        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      const min = String(minutes).padStart(2, '0');
+      const sec = String(seconds).padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${min}:${sec}`;
     }
 
     function toggleTimer() {
