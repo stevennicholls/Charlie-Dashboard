@@ -2,71 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Daily Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Charlie Dashboard</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       background-color: #f9f9f9;
+      color: #111;
     }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
     }
+
     .card {
       background: white;
+      padding: 1.2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    iframe {
+      border: none;
       border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1rem;
+      }
+
+      header {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>📆 Daily Dashboard</h1>
+  <header>📊 Charlie Dashboard</header>
+
   <div class="grid">
+
+    <!-- 🌤 Weather Widget -->
     <div class="card">
-      <h2>📅 Google Calendar</h2>
-      <iframe src="https://calendar.google.com/calendar/embed?src=steven@salientfusion.com"
-              style="border:0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+      <h2>🌤 Current Weather</h2>
+      <iframe
+        src="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.html?location=auto&theme=pure"
+        width="100%" height="180">
+      </iframe>
     </div>
+
+    <!-- ✅ Google Tasks Widget -->
     <div class="card">
-      <h2>✅ Google Tasks</h2>
-      <p>Embed or link your task view here.</p>
+      <h2>📝 My Tasks</h2>
+      <iframe src="https://tasks.google.com/embed/?origin=https://calendar.google.com" 
+              width="100%" height="400">
+      </iframe>
     </div>
+
+    <!-- 📅 Google Calendar Widget -->
     <div class="card">
-      <h2>📌 Charlie’s Project Updates</h2>
-      <p>This can pull from Notion, Google Sheets, or an email summary.</p>
+      <h2>📅 My Calendar</h2>
+      <iframe src="https://calendar.google.com/calendar/embed?src=YOUR_EMAIL@gmail.com&ctz=Europe%2FLondon" 
+              width="100%" height="400">
+      </iframe>
     </div>
+
+    <!-- 🔄 Project Updates Summary -->
+    <div class="card">
+      <h2>📈 Charlie’s Project Updates</h2>
+      <p>
+        You’ll receive daily email updates with tasks completed, flows triggered, and any issues identified by Charlie (ChatGPT). This includes automation progress in Make.com, Google Workspace, and Notion.
+      </p>
+    </div>
+
+    <!-- ⏱ Focus Timer Widget -->
+    <div class="card">
+      <h2>⏱ Focus Timer</h2>
+      <iframe src="https://pomofocus.io" width="100%" height="500"></iframe>
+    </div>
+
   </div>
 </body>
 </html>
-
-<div class="card">
-  <h2>🌤 Weather</h2>
-  <a class="weatherwidget-io" href="https://forecast7.com/en/51d51n0d13/london/" 
-     data-label_1="LONDON" data-label_2="WEATHER" data-theme="pure">LONDON WEATHER</a>
-  <script>
-    !function(d,s,id){
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if(!d.getElementById(id)){
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://weatherwidget.io/js/widget.min.js';
-        fjs.parentNode.insertBefore(js,fjs);
-      }
-    }(document,'script','weatherwidget-io-js');
-  </script>
-</div>
-
-<div class="card">
-  <h2>⏱ Focus Timer</h2>
-  <iframe src="https://pomofocus.io" width="100%" height="500" frameborder="0"></iframe>
-</div>
-
-<div class="card">
-  <h2>⏱ Focus Timer</h2>
-  <iframe src="https://pomofocus.io" width="100%" height="500" frameborder="0"></iframe>
-</div>
