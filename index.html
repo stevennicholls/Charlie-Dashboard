@@ -3,71 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Charlie’s Daily Dashboard</title>
+  <title>Charlie Dashboard</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background: url('background.jpg') no-repeat center center fixed;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('your-background.jpg') no-repeat center center fixed;
       background-size: cover;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      color: #111;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      color: #fff;
     }
 
     header {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-      padding: 1rem 2rem 0 2rem;
-      color: #fff;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    #clock {
+      padding: 1rem 2rem;
       font-size: 1.2rem;
+      font-weight: 500;
+      color: white;
     }
 
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 1.5rem;
       padding: 2rem;
     }
 
-    .glass-container {
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 16px;
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
       padding: 1.5rem;
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.18);
+      height: 100%;
     }
 
     iframe {
-      border: none;
       width: 100%;
-      height: 600px;
-      border-radius: 12px;
+      height: 400px;
+      border: none;
+      border-radius: 10px;
     }
 
-    .focus-timer {
-      text-align: center;
+    #timer-display {
+      font-size: 2rem;
+      margin: 1rem 0;
     }
 
     .focus-timer button {
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
+      padding: 0.5rem 1rem;
       border-radius: 6px;
-      border: none;
       background-color: #fff;
       color: #333;
+      border: none;
+      font-weight: bold;
       cursor: pointer;
     }
 
@@ -76,66 +71,75 @@
         grid-template-columns: 1fr;
         padding: 1rem;
       }
-
-      iframe {
-        height: 500px;
-      }
     }
   </style>
 </head>
 <body>
+
+  <!-- 🕒 Time -->
   <header>
-    <h1>Charlie’s Daily Dashboard</h1>
     <div id="clock"></div>
   </header>
 
   <main class="dashboard">
-    <!-- ✅ Google Tasks -->
-    <div class="glass-container">
-      <h2>✅ Google Tasks</h2>
-      <iframe src="https://tasksboard.com/app" allowfullscreen></iframe>
+
+    <!-- ✅ Google Tasks via TasksBoard -->
+    <div class="glass">
+      <h2>✅ Salient Fusion® Work Tasks</h2>
+      <iframe src="https://tasksboard.com/embed/gmail/steven@salientfusion.com" allowfullscreen></iframe>
     </div>
 
     <!-- 📅 Google Calendar -->
-    <div class="glass-container">
-      <h2>📅 Google Calendar</h2>
-      <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" scrolling="no"></iframe>
+    <div class="glass">
+      <h2>📅 Calendar</h2>
+      <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" frameborder="0" scrolling="no"></iframe>
     </div>
 
     <!-- ⏱️ Focus Timer -->
-    <div class="glass-container">
+    <div class="glass">
       <h2>⏱️ Focus Timer</h2>
+      <div id="timer-display">25:00</div>
       <div class="focus-timer">
-        <div id="timer-display">25:00</div>
         <button onclick="toggleTimer()" id="startStopBtn">Start</button>
       </div>
     </div>
+
+    <!-- 📈 Task Summary (Static for now) -->
+    <div class="glass">
+      <h2>📈 Tasks Completed Today</h2>
+      <ul>
+        <li>Create Charlie chat calendar ✅</li>
+        <li>Do the house insurance claim ✅</li>
+        <li>Apply for jobs ✅</li>
+      </ul>
+    </div>
+
   </main>
 
   <script>
-    // Live Clock
+    // ⏰ Live Clock
     setInterval(() => {
       const now = new Date();
       document.getElementById('clock').textContent = now.toLocaleTimeString();
     }, 1000);
 
-    // Focus Timer Logic
-    let timer;
+    // 🔁 Focus Timer
     let minutes = 25;
     let seconds = 0;
-    let isRunning = false;
+    let timer;
+    let running = false;
 
-    function updateDisplay() {
+    function updateTimer() {
       const min = String(minutes).padStart(2, '0');
       const sec = String(seconds).padStart(2, '0');
       document.getElementById('timer-display').textContent = `${min}:${sec}`;
     }
 
     function toggleTimer() {
-      if (isRunning) {
+      if (running) {
         clearInterval(timer);
-        isRunning = false;
-        document.getElementById('startStopBtn').textContent = 'Start';
+        running = false;
+        document.getElementById('startStopBtn').textContent = "Start";
       } else {
         timer = setInterval(() => {
           if (seconds === 0) {
@@ -149,14 +153,14 @@
           } else {
             seconds--;
           }
-          updateDisplay();
+          updateTimer();
         }, 1000);
-        isRunning = true;
-        document.getElementById('startStopBtn').textContent = 'Pause';
+        running = true;
+        document.getElementById('startStopBtn').textContent = "Pause";
       }
     }
 
-    updateDisplay();
+    updateTimer();
   </script>
 </body>
 </html>
