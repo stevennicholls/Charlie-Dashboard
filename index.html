@@ -1,166 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Charlie Dashboard</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('your-background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      color: #fff;
+const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // replace this
+const WEATHER_API_KEY = 'YOUR_OPENWEATHER_API_KEY'; // replace this
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/tasks.readonly';
+
+function start() {
+  loadWeather();
+  loadGoogleAPI();
+}
+
+function loadWeather() {
+  const weatherDiv = document.getElementById('weather');
+  if (!navigator.geolocation) {
+    weatherDiv.textContent = 'Geolocation not supported!';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const { latitude, longitude } = position.coords;
+    try {
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric`
+      );
+      const data = await res.json();
+      weatherDiv.textContent = `${data.name}: ${data.main.temp}°C - ${data.weather[0].description}`;
+    } catch (err) {
+      weatherDiv.textContent = 'Failed to load weather 🌧️';
     }
+  }, () => {
+    weatherDiv.textContent = '⚠️ Location permission denied.';
+  });
+}
 
-    header {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: white;
+function loadGoogleAPI() {
+  gapi.load('client:auth2', initClient);
+}
+
+function initClient() {
+  gapi.client.init({
+    clientId: CLIENT_ID,
+    scope: SCOPES
+  }).then(() => {
+    const authInstance = gapi.auth2.getAuthInstance();
+
+    document.getElementById('login-button').onclick = () => {
+      authInstance.signIn().then(() => {
+        document.getElementById('login-section').hidden = true;
+        document.getElementById('content').hidden = false;
+
+        loadCalendar();
+        loadTasks();
+      });
+    };
+  });
+}
+
+async function loadCalendar() {
+  try {
+    const now = new Date().toISOString();
+    const res = await gapi.client.calendar.events.list({
+      calendarId: 'primary',
+      timeMin: now,
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 5,
+      orderBy: 'startTime'
+    });
+
+    const events = res.result.items;
+    const eventsList = document.getElementById('events');
+    eventsList.innerHTML = '';
+    if (events.length === 0) {
+      eventsList.innerHTML = '<li>No upcoming events</li>';
+    } else {
+      events.forEach(event => {
+        const li = document.createElement('li');
+        const when = event.start.dateTime || event.start.date;
+        li.textContent = `📅 ${event.summary} - ${new Date(when).toLocaleString()}`;
+        eventsList.appendChild(li);
+      });
     }
+  } catch (err) {
+    document.getElementById('events').innerHTML = '<li>Failed to load events</li>';
+  }
+}
 
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
+async function loadTasks() {
+  try {
+    const res = await gapi.client.tasks.tasks.list({
+      tasklist: '@default',
+      maxResults: 5
+    });
+
+    const tasks = res.result.items || [];
+    const taskList = document.getElementById('tasklist');
+    taskList.innerHTML = '';
+    if (tasks.length === 0) {
+      taskList.innerHTML = '<li>No tasks found</li>';
+    } else {
+      tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.textContent = `✅ ${task.title}`;
+        taskList.appendChild(li);
+      });
     }
+  } catch (err) {
+    document.getElementById('tasklist').innerHTML = '<li>Failed to load tasks</li>';
+  }
+}
 
-    .glass {
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 1.5rem;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      height: 100%;
-    }
-
-    iframe {
-      width: 100%;
-      height: 400px;
-      border: none;
-      border-radius: 10px;
-    }
-
-    #timer-display {
-      font-size: 2rem;
-      margin: 1rem 0;
-    }
-
-    .focus-timer button {
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      background-color: #fff;
-      color: #333;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .dashboard {
-        grid-template-columns: 1fr;
-        padding: 1rem;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- 🕒 Time -->
-  <header>
-    <div id="clock"></div>
-  </header>
-
-  <main class="dashboard">
-
-    <!-- ✅ Google Tasks via TasksBoard -->
-    <div class="glass">
-      <h2>✅ Salient Fusion® Work Tasks</h2>
-      <iframe src="https://tasksboard.com/embed/gmail/steven@salientfusion.com" allowfullscreen></iframe>
-    </div>
-
-    <!-- 📅 Google Calendar -->
-    <div class="glass">
-      <h2>📅 Calendar</h2>
-      <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" frameborder="0" scrolling="no"></iframe>
-    </div>
-
-    <!-- ⏱️ Focus Timer -->
-    <div class="glass">
-      <h2>⏱️ Focus Timer</h2>
-      <div id="timer-display">25:00</div>
-      <div class="focus-timer">
-        <button onclick="toggleTimer()" id="startStopBtn">Start</button>
-      </div>
-    </div>
-
-    <!-- 📈 Task Summary (Static for now) -->
-    <div class="glass">
-      <h2>📈 Tasks Completed Today</h2>
-      <ul>
-        <li>Create Charlie chat calendar ✅</li>
-        <li>Do the house insurance claim ✅</li>
-        <li>Apply for jobs ✅</li>
-      </ul>
-    </div>
-
-  </main>
-
-  <script>
-    // ⏰ Live Clock
-    setInterval(() => {
-      const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString();
-    }, 1000);
-
-    // 🔁 Focus Timer
-    let minutes = 25;
-    let seconds = 0;
-    let timer;
-    let running = false;
-
-    function updateTimer() {
-      const min = String(minutes).padStart(2, '0');
-      const sec = String(seconds).padStart(2, '0');
-      document.getElementById('timer-display').textContent = `${min}:${sec}`;
-    }
-
-    function toggleTimer() {
-      if (running) {
-        clearInterval(timer);
-        running = false;
-        document.getElementById('startStopBtn').textContent = "Start";
-      } else {
-        timer = setInterval(() => {
-          if (seconds === 0) {
-            if (minutes === 0) {
-              clearInterval(timer);
-              alert("Time's up!");
-              return;
-            }
-            minutes--;
-            seconds = 59;
-          } else {
-            seconds--;
-          }
-          updateTimer();
-        }, 1000);
-        running = true;
-        document.getElementById('startStopBtn').textContent = "Pause";
-      }
-    }
-
-    updateTimer();
-  </script>
-</body>
-</html>
+// Start after DOM ready
+window.onload = start;
