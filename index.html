@@ -2,103 +2,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Charlie Daily Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Charlie’s Daily Dashboard</title>
   <style>
-    /* ==== Global Styles ==== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* ===== Global & Background ===== */
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      position: relative;
-      min-height: 100vh;
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: url('your-image.jpg') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #111;
+    }
+
+    /* ===== Layout ===== */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
       padding: 2rem;
     }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .glass {
+
+    /* ===== Glassmorphism Container ===== */
+    .glass-container {
       background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-radius: 16px;
-      padding: 1rem;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    /* ==== Top Bar ==== */
-    .top-bar {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-    #clockDisplay {
-      color: #333;
-    }
-
-    /* ==== Weather Widget ==== */
-    #weatherWidget {
-      text-align: center;
-    }
-    
-    /* ==== Focus Timer (Basic Responsive Sizing) ==== */
-    .focus-timer {
-      background: #c44b4b;
-      color: #fff;
-      text-align: center;
-      border-radius: 1rem;
       padding: 1.5rem;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .focus-timer button {
-      padding: 0.75rem 2rem;
-      font-size: 1rem;
+
+    /* ===== Header / Clock ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem 0 2rem;
+      color: #fff;
+    }
+
+    #clock {
+      font-size: 1.2rem;
+    }
+
+    iframe {
+      width: 100%;
+      height: 300px;
       border: none;
       border-radius: 8px;
+    }
+
+    .focus-timer {
+      text-align: center;
+    }
+
+    .focus-timer button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #fff;
+      color: #333;
       cursor: pointer;
     }
 
-    /* ==== Background Image ==== */
-    .background-image {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 100vw;
-      background-image: url('your-image.jpg'); /* replace */
-      background-size: cover;
-      background-position: center;
-      opacity: 0.08;
-      z-index: -1;
-    }
-
-    @media (max-width: 600px) {
-      .focus-timer {
-        font-size: 0.9rem;
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+        padding: 1rem;
       }
     }
   </style>
 </head>
+
 <body>
-  <!-- Background Image -->
-  <div class="background-image"></div>
+  <!-- ===== Header with Live Clock ===== -->
+  <header>
+    <h1>Charlie’s Daily Dashboard</h1>
+    <div id="clock"></div>
+  </header>
 
-  <!-- Top Clock Bar -->
-  <div class="top-bar">
-    <div id="clockDisplay"></div>
-  </div>
+  <main class="dashboard">
+    <!-- ===== Google Calendar Widget ===== -->
+    <div class="glass-container">
+      <h2>📅 Google Calendar</h2>
+      <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_email&ctz=Europe%2FLondon"></iframe>
+    </div>
 
-  <!-- Dashboard Grid -->
-  <div class="container">
+    <!-- ===== Google Tasks Placeholder ===== -->
+    <div class="glass-container">
+      <h2>✅ Google Tasks</h2>
+      <p>Embed or sync your Google Tasks here (via Make.com or Apps Script).</p>
+    </div>
 
-    <!-- Google Calendar Widget -->
-    <div class="glass">
-      <h2>
+    <!-- ===== Project Updates Section ===== -->
+    <div class="glass-container">
+      <h2>📌 Project Updates</h2>
+      <p>This section pulls from Notion, Sheets, or emails. Automation required.</p>
+    </div>
+
+    <!-- ===== Weather Widget ===== -->
+    <div class="glass-container">
+      <h2>🌤️ Weather</h2>
+      <div id="weather">Detecting location and loading...</div>
+    </div>
+
+    <!-- ===== Focus Timer Widget ===== -->
+    <div class="glass-container">
+      <h2>⏱️ Focus Timer</h2>
+      <div class="focus-timer">
+        <div id="timer-display" style="font-size: 2rem; margin: 1rem 0;">25:00</div>
+        <button onclick="toggleTimer()" id="startStopBtn">Start</button>
+      </div>
+    </div>
+
+    <!-- ===== Completed Tasks Summary ===== -->
+    <div class="glass-container">
+      <h2>📈 Tasks Completed Today</h2>
+      <ul id="task-summary">
+        <li>Task 1 – ✅</li>
+        <li>Task 2 – ✅</li>
+        <!-- Add more dynamically if needed -->
+      </ul>
+    </div>
+  </main>
+
+  <!-- ===== JavaScript Functionality ===== -->
+  <script>
+    // Live Clock
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString();
+    }, 1000);
+
+    // Weather API (OpenWeather)
+    const apiKey = 'YOUR_OPENWEATHER_API_KEY'; // Replace with your key
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { latitude, longitude } = pos.coords;
+      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('weather').innerHTML = `
+            <strong>${data.name}</strong><br>
+            ${data.weather[0].description}<br>
+            🌡️ ${data.main.temp}°C
+          `;
+        })
+        .catch(() => {
+          document.getElementById('weather').textContent = 'Weather info unavailable';
+        });
+    });
+
+    // Focus Timer Logic
+    let timer;
+    let minutes = 25;
+    let seconds = 0;
+    let isRunning = false;
+
+    function updateDisplay() {
+      document.getElementById('timer-display').textContent =
+        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function toggleTimer() {
+      if (isRunning) {
+        clearInterval(timer);
+        isRunning = false;
+        document.getElementById('startStopBtn').textContent = 'Start';
+      } else {
+        timer = setInterval(() => {
+          if (seconds === 0) {
+            if (minutes === 0) {
+              clearInterval(timer);
+              alert("Time's up!");
+              return;
+            }
+            minutes--;
+            seconds = 59;
+          } else {
+            seconds--;
+          }
+          updateDisplay();
+        }, 1000);
+        isRunning = true;
+        document.getElementById('startStopBtn').textContent = 'Pause';
+      }
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
