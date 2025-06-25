@@ -5,26 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Charlie’s Daily Dashboard</title>
   <style>
-    /* ===== Global & Background ===== */
     body {
       margin: 0;
       font-family: 'Helvetica Neue', sans-serif;
-      background: url('your-image.jpg') no-repeat center center fixed;
+      background: url('background.jpg') no-repeat center center fixed;
       background-size: cover;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      color: #111;
+      color: #fff;
     }
 
-    /* ===== Layout ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem 0 2rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    #clock {
+      font-size: 1.2rem;
+    }
+
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
       padding: 2rem;
     }
 
-    /* ===== Glassmorphism Container ===== */
     .glass-container {
       background: rgba(255, 255, 255, 0.15);
       box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
@@ -34,19 +47,6 @@
       padding: 1.5rem;
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    /* ===== Header / Clock ===== */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem 0 2rem;
-      color: #fff;
-    }
-
-    #clock {
-      font-size: 1.2rem;
     }
 
     iframe {
@@ -80,38 +80,37 @@
 </head>
 
 <body>
-  <!-- ===== Header with Live Clock ===== -->
   <header>
     <h1>Charlie’s Daily Dashboard</h1>
-    <div id="clock"></div>
+    <div id="clock">Loading time...</div>
   </header>
 
   <main class="dashboard">
-    <!-- ===== Google Calendar Widget ===== -->
+    <!-- Google Calendar -->
     <div class="glass-container">
       <h2>📅 Google Calendar</h2>
       <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_email&ctz=Europe%2FLondon"></iframe>
     </div>
 
-    <!-- ===== Google Tasks Placeholder ===== -->
+    <!-- Google Tasks Placeholder -->
     <div class="glass-container">
       <h2>✅ Google Tasks</h2>
-      <p>Embed or sync your Google Tasks here (via Make.com or Apps Script).</p>
+      <p>Embed or sync your Google Tasks here.</p>
     </div>
 
-    <!-- ===== Project Updates Section ===== -->
+    <!-- Project Updates -->
     <div class="glass-container">
       <h2>📌 Project Updates</h2>
-      <p>This section pulls from Notion, Sheets, or emails. Automation required.</p>
+      <p>This can pull from Notion, Sheets, or email summaries.</p>
     </div>
 
-    <!-- ===== Weather Widget ===== -->
+    <!-- Weather Widget -->
     <div class="glass-container">
       <h2>🌤️ Weather</h2>
-      <div id="weather">Detecting location and loading...</div>
+      <div id="weather">Loading current weather...</div>
     </div>
 
-    <!-- ===== Focus Timer Widget ===== -->
+    <!-- Focus Timer -->
     <div class="glass-container">
       <h2>⏱️ Focus Timer</h2>
       <div class="focus-timer">
@@ -120,18 +119,16 @@
       </div>
     </div>
 
-    <!-- ===== Completed Tasks Summary ===== -->
+    <!-- Task Completion Summary -->
     <div class="glass-container">
       <h2>📈 Tasks Completed Today</h2>
       <ul id="task-summary">
         <li>Task 1 – ✅</li>
         <li>Task 2 – ✅</li>
-        <!-- Add more dynamically if needed -->
       </ul>
     </div>
   </main>
 
-  <!-- ===== JavaScript Functionality ===== -->
   <script>
     // Live Clock
     setInterval(() => {
@@ -139,8 +136,8 @@
       document.getElementById('clock').textContent = now.toLocaleTimeString();
     }, 1000);
 
-    // Weather API (OpenWeather)
-    const apiKey = 'YOUR_OPENWEATHER_API_KEY'; // Replace with your key
+    // Weather API (requires key)
+    const apiKey = 'YOUR_OPENWEATHER_API_KEY';
     navigator.geolocation.getCurrentPosition((pos) => {
       const { latitude, longitude } = pos.coords;
       fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
@@ -157,7 +154,7 @@
         });
     });
 
-    // Focus Timer Logic
+    // Focus Timer
     let timer;
     let minutes = 25;
     let seconds = 0;
