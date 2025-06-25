@@ -3,112 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Charlie Dashboard</title>
+  <title>Daily Dashboard</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f7;
       margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-      color: #111;
+      padding: 20px;
     }
-
-    header {
-      background: #111;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
+    h2 {
+      margin-top: 0;
     }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+    .dashboard-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
     }
-
     .card {
       background: white;
-      padding: 1.2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 1rem;
-      font-size: 1.3rem;
-    }
-
-    iframe {
-      border: none;
+      padding: 20px;
       border-radius: 12px;
+      flex: 1;
+      min-width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    p {
-      line-height: 1.5;
+    /* WEATHER */
+    #weather {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    #weather-icon {
+      font-size: 40px;
     }
 
-    @media (max-width: 480px) {
-      .card {
-        padding: 1rem;
+    /* FOCUS TIMER */
+    .focus-timer-wrapper {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .focus-timer {
+      background: #c44d4d;
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .focus-timer h1 {
+      font-size: 42px;
+      margin: 0 0 10px;
+    }
+    .focus-timer .time {
+      font-size: 60px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .focus-timer button {
+      background: white;
+      color: #c44d4d;
+      font-weight: bold;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .focus-timer .time {
+        font-size: 40px;
       }
-
-      header {
-        font-size: 1.2rem;
+      .dashboard-grid {
+        flex-direction: column;
       }
     }
   </style>
 </head>
-
 <body>
-  <header>📊 Charlie Dashboard</header>
 
-  <div class="grid">
-
-    <!-- 🌤 Weather Widget -->
-    <div class="card">
-      <h2>🌤 Current Weather</h2>
-      <iframe
-        src="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.html?location=auto&theme=pure"
-        width="100%" height="180">
-      </iframe>
+  <!-- 🌤 WEATHER WIDGET -->
+  <div class="card" id="weather-widget">
+    <h2>🌤 Weather</h2>
+    <div id="weather">
+      <div>
+        <strong id="location">Loading...</strong><br />
+        <span id="description"></span><br />
+        <span id="temp"></span>
+      </div>
+      <div id="weather-icon">⛅</div>
     </div>
-
-    <!-- ✅ Google Tasks Widget -->
-    <div class="card">
-      <h2>📝 My Tasks</h2>
-      <iframe src="https://tasks.google.com/embed/?origin=https://calendar.google.com" 
-              width="100%" height="400">
-      </iframe>
-    </div>
-
-    <!-- 📅 Google Calendar Widget -->
-    <div class="card">
-      <h2>📅 My Calendar</h2>
-      <iframe src="https://calendar.google.com/calendar/embed?src=YOUR_EMAIL@gmail.com&ctz=Europe%2FLondon" 
-              width="100%" height="400">
-      </iframe>
-    </div>
-
-    <!-- 🔄 Project Updates Summary -->
-    <div class="card">
-      <h2>📈 Charlie’s Project Updates</h2>
-      <p>
-        You’ll receive daily email updates with tasks completed, flows triggered, and any issues identified by Charlie (ChatGPT). This includes automation progress in Make.com, Google Workspace, and Notion.
-      </p>
-    </div>
-
-    <!-- ⏱ Focus Timer Widget -->
-    <div class="card">
-      <h2>⏱ Focus Timer</h2>
-      <iframe src="https://pomofocus.io" width="100%" height="500"></iframe>
-    </div>
-
   </div>
+
+  <!-- 📅 GOOGLE CALENDAR & TASKS -->
+  <div class="dashboard-grid">
+    <div class="card">
+      <h2>📅 Google Calendar</h2>
+      <iframe src="YOUR_GOOGLE_CALENDAR_EMBED_URL"
+        style="border:0"
+        width="100%"
+        height="300"
+        frameborder="0"
+        scrolling="no"></iframe>
+    </div>
+    <div class="card">
+      <h2>✅ Google Tasks</h2>
+      <p>Embed or link your task view here.</p>
+    </div>
+    <div class="card">
+      <h2>📌 Charlie’s Project Updates</h2>
+      <p>This can pull from Notion, Google Sheets, or an email summary.</p>
+    </div>
+  </div>
+
+  <!-- ⏱ FOCUS TIMER -->
+  <div class="focus-timer-wrapper">
+    <div class="card focus-timer">
+      <h2>⏱ Focus Timer</h2>
+      <div class="time" id="timer">25:00</div>
+      <button id="startBtn">START</button>
+    </div>
+  </div>
+
+  <!-- 🌐 SCRIPTS -->
+  <script>
+    // WEATHER LOGIC
+    window.onload = () => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your API key
+          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+          const res = await fetch(url);
+          const data = await res.json();
+
+          document.getElementById("location").innerText = data.name.toUpperCase();
+          document.getElementById("description").innerText = data.weather[0].description;
+          document.getElementById("temp").innerText = `${Math.round(data.main.temp)}°C`;
+        });
+      } else {
+        document.getElementById("location").innerText = "Location unavailable";
+      }
+    };
+
+    // SIMPLE FOCUS TIMER LOGIC
+    const timerDisplay = document.getElementById("timer");
+    const startBtn = document.getElementById("startBtn");
+    let timer = 1500; // 25 minutes
+    let running = false;
+    let interval;
+
+    function updateTimer() {
+      const mins = Math.floor(timer / 60);
+      const secs = timer % 60;
+      timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    startBtn.addEventListener("click", () => {
+      if (!running) {
+        running = true;
+        interval = setInterval(() => {
+          timer--;
+          updateTimer();
+          if (timer <= 0) {
+            clearInterval(interval);
+            running = false;
+            alert("Focus session complete!");
+          }
+        }, 1000);
+        startBtn.textContent = "PAUSE";
+      } else {
+        clearInterval(interval);
+        running = false;
+        startBtn.textContent = "START";
+      }
+    });
+
+    updateTimer();
+  </script>
 </body>
 </html>
