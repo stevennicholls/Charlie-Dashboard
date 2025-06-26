@@ -24,13 +24,13 @@
     }
 
     .glass {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      height: 100%;
     }
 
     .grid {
@@ -55,51 +55,86 @@
       border-radius: 12px;
     }
 
-    a {
-      color: #00ffff;
-      text-decoration: underline;
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    li span {
+      display: block;
+      font-size: 0.85rem;
+      color: #ddd;
+    }
+
+    h2 {
+      margin-bottom: 15px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Live Clock -->
+  <!-- Clock -->
   <div class="clock" id="clock"></div>
 
   <!-- Dashboard Grid -->
   <div class="grid">
 
-    <!-- Google Calendar -->
+    <!-- Calendar -->
     <div class="glass">
       <h2>📅 Calendar</h2>
       <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" allowfullscreen></iframe>
     </div>
 
-    <!-- Tasks Fallback -->
+    <!-- Tasks -->
     <div class="glass">
       <h2>✅ Tasks</h2>
-      <p style="font-size: 1rem;">
-        The live embed of <strong>TasksBoard</strong> failed to load.<br/>
-        👉 <a href="https://tasksboard.com/app" target="_blank">Click here to open TasksBoard in a new tab</a><br/>
-        If you’re not logged in, please do so first and refresh this page.
-      </p>
+      <ul>
+        <li>
+          Finalise GitHub Pages Deployment
+          <span>Category: Dev · Priority: High · Due: June 28</span>
+        </li>
+        <li>
+          Create Notion sync module for completed tasks
+          <span>Category: Automation · Priority: Medium · Due: June 29</span>
+        </li>
+        <li>
+          Review embedded dashboard on iPhone
+          <span>Category: QA · Priority: Low · Due: June 30</span>
+        </li>
+      </ul>
     </div>
 
-    <!-- Tasks Completed Today -->
+    <!-- Completed Tasks -->
     <div class="glass">
       <h2>📌 Tasks Completed Today</h2>
-      <p>This section will show today's completed tasks once automation is connected.</p>
+      <ul>
+        <li>
+          Added Postman-to-Google Tasks webhook
+          <span>Completed: 10:45 AM</span>
+        </li>
+        <li>
+          Fixed redirect URI mismatch in Google Sheets
+          <span>Completed: 3:22 PM</span>
+        </li>
+      </ul>
     </div>
 
     <!-- Focus Timer -->
     <div class="glass">
       <h2>⏳ Focus Timer</h2>
-      <p>Coming soon: Pomodoro or custom countdown timer.</p>
+      <p>Timer UI coming soon…</p>
     </div>
 
   </div>
 
-  <!-- JavaScript Clock -->
+  <!-- JS: Live Clock -->
   <script>
     function updateClock() {
       const now = new Date();
