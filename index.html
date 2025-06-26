@@ -54,38 +54,52 @@
       border: none;
       border-radius: 12px;
     }
+
+    a {
+      color: #00ffff;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Live Clock -->
   <div class="clock" id="clock"></div>
 
+  <!-- Dashboard Grid -->
   <div class="grid">
+
     <!-- Google Calendar -->
     <div class="glass">
       <h2>📅 Calendar</h2>
-      <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur"></iframe>
+      <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" allowfullscreen></iframe>
     </div>
 
-    <!-- Google Tasks (TasksBoard) -->
+    <!-- Tasks Fallback -->
     <div class="glass">
       <h2>✅ Tasks</h2>
-      <iframe src="https://tasksboard.com/app" style="height: 400px;"></iframe>
+      <p style="font-size: 1rem;">
+        The live embed of <strong>TasksBoard</strong> failed to load.<br/>
+        👉 <a href="https://tasksboard.com/app" target="_blank">Click here to open TasksBoard in a new tab</a><br/>
+        If you’re not logged in, please do so first and refresh this page.
+      </p>
     </div>
 
     <!-- Tasks Completed Today -->
     <div class="glass">
       <h2>📌 Tasks Completed Today</h2>
-      <p>To be filled via automation or sync.</p>
+      <p>This section will show today's completed tasks once automation is connected.</p>
     </div>
 
     <!-- Focus Timer -->
     <div class="glass">
       <h2>⏳ Focus Timer</h2>
-      <p>Coming soon: Pomodoro or custom timer.</p>
+      <p>Coming soon: Pomodoro or custom countdown timer.</p>
     </div>
+
   </div>
 
+  <!-- JavaScript Clock -->
   <script>
     function updateClock() {
       const now = new Date();
