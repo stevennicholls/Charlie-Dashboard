@@ -15,8 +15,8 @@
     body {
       background: url('your-background.jpg') no-repeat center center fixed;
       background-size: cover;
-      backdrop-filter: blur(8px);
-      min-height: 100vh;
+      backdrop-filter: blur(6px);
+      height: 100vh;
       padding: 20px;
       color: white;
       display: flex;
@@ -56,7 +56,7 @@
     }
 
     h2 {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
   </style>
 </head>
@@ -68,16 +68,34 @@
   <!-- Dashboard Grid -->
   <div class="grid">
 
-    <!-- Google Calendar Embed -->
-    <div class="glass">
+    <!-- Google Calendar -->
+    <div class="glass" id="calendar-container">
       <h2>📅 Calendar</h2>
       <iframe src="https://calendar.google.com/calendar/embed?src=steven%40salientfusion.com&ctz=Asia%2FKuala_Lumpur" allowfullscreen></iframe>
     </div>
 
-    <!-- Google Tasks via TasksBoard Embed -->
-    <div class="glass">
+    <!-- Tasks (Google Sheets) -->
+    <div class="glass" id="tasks-container">
       <h2>✅ Tasks</h2>
-      <iframe src="https://tasksboard.com/app" allowfullscreen></iframe>
+      <div id="task-list">Loading tasks...</div>
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="glass" id="completed-tasks-container">
+      <h2>📌 Completed Today</h2>
+      <div id="completed-list">Awaiting data...</div>
+    </div>
+
+    <!-- Focus Timer -->
+    <div class="glass" id="focus-timer">
+      <h2>⏳ Focus Timer</h2>
+      <p>Timer coming soon...</p>
+    </div>
+
+    <!-- Weather -->
+    <div class="glass" id="weather-widget">
+      <h2>🌤️ Weather</h2>
+      <p>Weather integration in progress...</p>
     </div>
 
   </div>
