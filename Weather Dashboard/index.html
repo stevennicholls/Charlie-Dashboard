@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Tile</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+      background: #f0f4f8;
+    }
+
+    .tile {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .day {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+
+    .day:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tile">
+    <h2>🌤️ 7-Day Forecast</h2>
+    <div id="weather-container"></div>
+  </div>
+
+  <script>
+    const dummyForecast = [
+      { date: 'Mon', weather: 'Sunny', high: 30, low: 22 },
+      { date: 'Tue', weather: 'Cloudy', high: 28, low: 21 },
+      { date: 'Wed', weather: 'Rainy', high: 25, low: 20 },
+      { date: 'Thu', weather: 'Thunder', high: 27, low: 19 },
+      { date: 'Fri', weather: 'Sunny', high: 31, low: 23 },
+      { date: 'Sat', weather: 'Windy', high: 26, low: 22 },
+      { date: 'Sun', weather: 'Cloudy', high: 29, low: 24 }
+    ];
+
+    const container = document.getElementById('weather-container');
+    dummyForecast.forEach(day => {
+      const div = document.createElement('div');
+      div.className = 'day';
+      div.textContent = `${day.date}: ${day.weather} — High: ${day.high}°C, Low: ${day.low}°C`;
+      container.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>

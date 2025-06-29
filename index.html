@@ -25,15 +25,18 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
     }
+
     #weather-widget h2 {
       margin-top: 0;
       font-size: 1.2em;
     }
+
     .weather-day {
       display: flex;
       justify-content: space-between;
       margin: 8px 0;
     }
+
     .dashboard {
       display: flex;
       flex-wrap: wrap;
@@ -41,6 +44,7 @@
       padding: 20px;
       gap: 20px;
     }
+
     .tile {
       background-color: white;
       border-radius: 8px;
@@ -49,14 +53,18 @@
       flex: 1 1 300px;
       max-width: 400px;
     }
+
     .tile h2 {
       margin-top: 0;
     }
+
     ul { padding-left: 20px; }
   </style>
 </head>
 <body>
-  <header><h1>My Dashboard</h1></header>
+  <header class="topbar">
+    <div class="logo">Dashboard</div>
+  </header>
 
   <section id="weather-widget">
     <h2>🌤️ 7‑Day Forecast</h2>
@@ -70,30 +78,31 @@
   </main>
 
   <script>
-    // Placeholder task/project loader
     document.addEventListener('DOMContentLoaded', () => {
       ['Email client', 'Submit report', 'Plan meeting']
-        .forEach(task => document.createElement('li') && document.getElementById('taskList').appendChild(Object.assign(document.createElement('li'), { textContent: task })));
-      ['Website Redesign', 'Q3 Launch Prep', 'Mobile App Update']
-        .forEach(proj => document.getElementById('projectList').appendChild(Object.assign(document.createElement('li'), { textContent: proj })));
+        .forEach(task => document.getElementById('taskList')
+        .appendChild(Object.assign(document.createElement('li'), { textContent: task })));
 
-      // Replace with your OpenWeatherMap API key
-      const apiKey = 'YOUR_OPENWEATHER_API_KEY';
-      const lat = 3.0, lon = 101.55;  
-      fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`)
-        .then(res => res.json())
-        .then(data => {
-          const container = document.getElementById('weatherDays');
-          container.innerHTML = '';
-          data.daily.slice(0,7).forEach(day => {
-            const date = new Date(day.dt * 1000).toLocaleDateString();
-            const el = document.createElement('div');
-            el.className = 'weather-day';
-            el.textContent = `${date}: ${day.weather[0].description}, High ${Math.round(day.temp.max)}°C / Low ${Math.round(day.temp.min)}°C`;
-            container.appendChild(el);
-          });
-        })
-        .catch(err => document.getElementById('weatherDays').textContent = 'Failed to load weather');
+      ['Website Redesign', 'Q3 Launch Prep', 'Mobile App Update']
+        .forEach(proj => document.getElementById('projectList')
+        .appendChild(Object.assign(document.createElement('li'), { textContent: proj })));
+
+      // Dummy weather data
+      const dummyWeather = [
+        { dt: Date.now() / 1000, description: "sunny", max: 30, min: 22 },
+        { dt: Date.now() / 1000 + 86400, description: "cloudy", max: 28, min: 21 },
+        { dt: Date.now() / 1000 + 86400*2, description: "rainy", max: 26, min: 20 },
+      ];
+
+      const container = document.getElementById('weatherDays');
+      container.innerHTML = '';
+      dummyWeather.forEach(day => {
+        const date = new Date(day.dt * 1000).toLocaleDateString();
+        const el = document.createElement('div');
+        el.className = 'weather-day';
+        el.textContent = `${date}: ${day.description}, High ${day.max}°C / Low ${day.min}°C`;
+        container.appendChild(el);
+      });
     });
   </script>
 </body>
