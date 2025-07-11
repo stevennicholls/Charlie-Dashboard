@@ -6,18 +6,18 @@
   <title>Charlie Dashboard</title>
 
   <!-- Main Styles -->
-  <link rel="stylesheet" href="./style/style.css?v=1.0.3" />
+  <link rel="stylesheet" href="./style/style.css" />
 
   <!-- Widget Styles -->
-  <link rel="stylesheet" href="./widgets/calendar/calendar.css?v=1.0.1" />
-  <link rel="stylesheet" href="./widgets/tasks/tasks.css?v=1.0.1" />
-  <link rel="stylesheet" href="./widgets/projects/projects.css?v=1.0.1" />
+  <link rel="stylesheet" href="./widgets/calendar/calendar.css" />
+  <link rel="stylesheet" href="./widgets/tasks/tasks.css" />
+  <link rel="stylesheet" href="./widgets/projects/projects.css" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <!-- Core Script -->
-  <script src="./script/script.js?v=1.0.3" defer></script>
+  <script src="./script/script.js" defer></script>
 </head>
 <body>
   <h1 style="color: red; text-align: center;">✅ GitHub Sync Test Successful!!!!!</h1>
@@ -50,10 +50,26 @@
   </div>
 
   <!-- Widget Scripts -->
-  <script src="./script/clock.js?v=1.0.1" defer></script>
-  <script src="./script/drag.js?v=1.0.1" defer></script>
-  <script src="./widgets/tasks/tasks.js?v=1.0.1" defer></script>
-  <script src="./widgets/projects/projects.js?v=1.0.1" defer></script>
-  <script src="./widgets/calendar/calendar.js?v=1.0.1" defer></script>
+  <script src="./script/clock.js" defer></script>
+  <script src="./script/drag.js" defer></script>
+  <script src="./widgets/tasks/tasks.js" defer></script>
+  <script src="./widgets/projects/projects.js" defer></script>
+  <script src="./widgets/calendar/calendar.js" defer></script>
+
+  <!-- Dynamic Cache-Busting Script -->
+  <script>
+    const version = new Date().getTime();
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+      if (link.href.includes('.css')) {
+        link.href += `?v=${version}`;
+      }
+    });
+    document.querySelectorAll('script[src$=".js"]').forEach(script => {
+      const newScript = document.createElement('script');
+      newScript.src = `${script.src}?v=${version}`;
+      newScript.defer = true;
+      script.parentNode.replaceChild(newScript, script);
+    });
+  </script>
 </body>
 </html>
