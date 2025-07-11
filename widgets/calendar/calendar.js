@@ -1,0 +1,1 @@
+document.getElementById("calendarWidget").innerText = "📅 Your calendar goes here!";

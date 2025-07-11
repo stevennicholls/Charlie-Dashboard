@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charlie Dashboard</title>
+
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="./style/style.css" />
+
+  <!-- Widget Styles -->
+  <link rel="stylesheet" href="./widgets/calendar/calendar.css" />
+  <link rel="stylesheet" href="./widgets/tasks/tasks.css" />
+  <link rel="stylesheet" href="./widgets/projects/projects.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Clock -->
+    <div class="widget" style="top: 100px; left: 100px;">
+      <h2><i class="fa-solid fa-clock"></i> Now</h2>
+      <div class="time-display" id="date"></div>
+      <div class="time-display" id="clock"></div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="widget" style="top: 100px; left: 450px;">
+      <h2><i class="fa-solid fa-list-check"></i> Tasks</h2>
+      <ul id="tasklist"></ul>
+    </div>
+
+    <!-- Projects -->
+    <div class="widget" style="top: 100px; left: 800px;">
+      <h2><i class="fa-solid fa-diagram-project"></i> Projects</h2>
+      <ul id="projectlist"></ul>
+    </div>
+
+    <!-- Calendar -->
+    <div class="widget" style="top: 350px; left: 100px;">
+      <h2><i class="fa-solid fa-calendar-days"></i> Calendar</h2>
+      <div id="calendarWidget"></div>
+    </div>
+  </div>
+
+  <!-- Global Scripts -->
+  <script src="./script/clock.js" defer></script>
+  <script src="./script/drag.js" defer></script>
+  <script src="./script/script.js" defer></script>
+
+  <!-- Widget Scripts -->
+  <script src="./widgets/tasks/tasks.js" defer></script>
+  <script src="./widgets/projects/projects.js" defer></script>
+  <script src="./widgets/calendar/calendar.js" defer></script>
+</body>
+</html>
